@@ -35,13 +35,8 @@ O Driver HAT possui dois switches na placa:
 
 ### Requisitos
 
-<<<<<<< HEAD:test/README
-- [VSCode]
-- Extensão [PlatformIO] instalada no VSCode
-=======
 - VSCode
 - Extensão PlatformIO instalada no VSCode
->>>>>>> 5f74b38 (Descrição do projeto):README
 
 ---
 
@@ -81,7 +76,7 @@ No Linux, por padrão o usuário não tem permissão para acessar portas seriais
 sudo usermod -a -G dialout $USER
 ```
 
-> ⚠️ **Obrigatório:** Após executar o comando, faça **logout** e **login** novamente no sistema. Sem isso, a permissão não será aplicada e o upload continuará falhando.
+> Após executar o comando, faça **logout** e **login** novamente no sistema. Sem isso, a permissão não será aplicada e o upload continuará falhando.
 
 ---
 
