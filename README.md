@@ -1,0 +1,128 @@
+# ESP32 + e-Paper 7.5" (B) V3 — Guia de Configuração
+
+Guia completo para conectar e configurar o display e-Paper Waveshare 7.5" (B) V3 com a ESP32 DevKit V1.
+
+---
+
+## Componentes utilizados
+
+| Componente | Modelo |
+|---|---|
+| Microcontrolador | DOIT ESP32 DevKit V1 (ESP32-WROOM-32) |
+| Display | Waveshare 7.5inch e-Paper (B) V3 — SKU: 13380 |
+| Driver | Waveshare e-Paper Driver HAT Rev2.3 |
+
+---
+
+## Conexões
+
+> **ATENÇÃO:** O display opera em **3.3V**. Nunca conecte o VCC ao 5V — isso pode queimar o display.
+
+![Esquema de conexão](ESP32_E-Paper.png)
+
+> Use **D15** para o CS e não D5. O D5 é um pino de strapping do ESP32 e causa conflito durante a gravação do código.
+
+### Switch do Driver HAT
+
+O Driver HAT possui dois switches na placa:
+
+- **Interface Config** → deixe na posição **0** (4-line SPI)
+- **Display Config A e B** → configure conforme o modelo do display (verifique na documentação Waveshare)
+
+---
+
+## Configuração do ambiente
+
+### Requisitos
+
+- VSCode
+- Extensão PlatformIO instalada no VSCode
+
+---
+
+## Verificando a porta de conexão da ESP32
+
+Após conectar a ESP32 ao computador via USB, abra o terminal e execute:
+
+```bash
+ls /dev/ttyUSB*
+```
+OU
+```bash
+ls /dev/ttyACM*
+```
+
+O resultado será:
+
+```
+/dev/ttyUSB0
+```
+ou
+```
+/dev/ttyACM0
+```
+
+Esse é o endereço da sua ESP32 no computador.
+
+> Se nenhum dos dois comandos retornar resultado, verifique se o cabo USB transmite dados e se o LED da ESP32 acende ao conectar.
+
+---
+
+## Permissão de acesso à porta (Linux)
+
+No Linux, por padrão o usuário não tem permissão para acessar portas seriais (Arduino, Esp32, etc). Para corrigir isso, execute:
+
+```bash
+sudo usermod -a -G dialout $USER
+```
+
+> Após executar o comando, faça **logout** e **login** novamente no sistema. Sem isso, a permissão não será aplicada e o upload continuará falhando.
+
+---
+
+## Configuração do projeto no PlatformIO
+
+Crie um novo projeto no PlatformIO e configure o arquivo `platformio.ini` da seguinte forma:
+
+```ini
+[env:esp32doit-devkit-v1]
+platform = espressif32
+board = esp32doit-devkit-v1
+framework = arduino
+monitor_speed = 115200
+upload_speed = 921600
+upload_port = /dev/ttyACM0 ou /dev/ttyUSB0
+monitor_port = /dev/ttyACM0 ou /dev/ttyUSB0
+lib_deps =
+    zinggjm/GxEPD2@^1.5.8
+    adafruit/Adafruit GFX Library@^1.11.9
+```
+
+> Substitua `/dev/ttyACM0` pela porta encontrada no passo anterior.
+
+### Estrutura de pastas do projeto
+
+```
+seu_projeto/
+├── src/
+│   └── main.cpp
+└── platformio.ini
+```
+
+> Não é necessário adicionar nenhum arquivo na pasta `lib`. As bibliotecas são baixadas automaticamente pelo PlatformIO via `lib_deps`.
+
+
+---
+
+## Gravando o código na ESP32
+
+No VSCode com PlatformIO, utilize os botões na barra inferior:
+
+| Botão   | Função |
+| Build   | Apenas compila o código |
+| Upload  | Compila e envia para a ESP32 |
+| Monitor | Abre o Serial Monitor |
+
+Clique em **Upload (→)** para compilar e enviar o código automaticamente.
+
+
