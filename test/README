@@ -35,8 +35,8 @@ O Driver HAT possui dois switches na placa:
 
 ### Requisitos
 
-- [VSCode](https://code.visualstudio.com/)
-- Extensão [PlatformIO](https://platformio.org/) instalada no VSCode
+- [VSCode]
+- Extensão [PlatformIO] instalada no VSCode
 
 ---
 
